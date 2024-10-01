@@ -7,8 +7,15 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     <style>
+        * {
+            user-select: none;
+        }
         body {
-            height: 100vh;
+            min-height: 100vh;
+        }
+
+        img {
+            width: 150px;
         }
 
         input::-webkit-inner-spin-button,
@@ -19,7 +26,8 @@
 
     <title>App</title>
 </head>
-<body class="d-flex align-items-center justify-content-center bg-dark">
+{{!-- Uso inadequado do 'align-items-center' no elemento body causa um erro de visualização da página no navegador. --}}
+<body class="d-flex justify-content-center bg-dark my-5">
     {{{body}}}
     <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
 </body>

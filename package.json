@@ -1,0 +1,17 @@
+{
+  "name": "shopping-node-bootstrap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gabriel Souza",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.0",
+    "express-fileupload": "^1.5.1",
+    "express-handlebars": "^8.0.1",
+    "mysql2": "^3.11.3"
+  }
+}
