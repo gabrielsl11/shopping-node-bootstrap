@@ -32,7 +32,14 @@ conn.connect((err) => {
 })
 
 // Configuração do Handlebars
-app.engine('handlebars', engine({defaultLayout: 'main'}))
+app.engine('handlebars', engine({
+    defaultLayout: 'main',
+    helpers: {
+        message: function (params1, params2, options) {
+            return params1 === params2 ? options.fn(this) : options.inverse(this);
+        }
+    }
+}));
 app.set('view engine', 'handlebars')
 app.set('views', './views')
 

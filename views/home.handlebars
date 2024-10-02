@@ -1,13 +1,19 @@
 <main>
     <div>
-        <div>
-            <form class="d-flex flex-column gap-3 align-items-center" action="/register" method="post" enctype="multipart/form-data">
+        <div class="d-flex flex-column align-items-center">
+            {{!-- Uso do diretório 'partials' utilizando chaves e seta para a direita. --}}
+            {{>message}}
+
+            <form class="d-flex flex-column gap-3 align-items-center" action="/register" method="post"
+                enctype="multipart/form-data">
                 <h4 class="text-center text-white">Register a product</h4>
-                {{!-- input:text é um atalho válido para se criar o elemento. --}}
-                <input type="text" name="name" class="form-control w-50" placeholder="Produtc's name" {{!-- required --}}>
-                <input type="number" name="price" class="form-control w-50" placeholder="Produtc's price" {{!-- required --}}>
-                <input type="file" name="image" class="form-control w-50" {{!-- required --}}>
-                <input type="submit" class="btn btn-success w-50" value="Register">
+                {{!-- input:text é um atalho válido para se criar o elemento com esse atributo. --}}
+                <input type="text" name="name" class="form-control" placeholder="Produtc's name" {{!-- required
+                    --}}>
+                <input type="number" name="price" class="form-control" placeholder="Produtc's price" {{!-- required
+                    --}}>
+                <input type="file" name="image" class="form-control" {{!-- required --}}>
+                <input type="submit" class="btn btn-success w-100" value="Register">
             </form>
         </div>
     </div>
@@ -16,16 +22,16 @@
 
     <div style="width: 768px;" class="d-flex align-items-center justify-content-center gap-3 flex-wrap">
         {{#each products}}
-            <div class="card p-3">
-                <img src="../images/{{image}}" class="align-self-center">
-                <div class="d-flex justify-content-center gap-2">
-                    <p class="text-center">{{name}}</p>
-                    <p>•</p>
-                    <p class="text-center">${{price}}</p>
-                </div>
-                <a href="/updating/{{id}}" class="btn btn-sm btn-primary mb-2">Update</a>
-                <a href="/delete/{{id}}&{{image}}" class="btn btn-sm btn-danger">Delete</a>
+        <div class="card p-3">
+            <img src="../images/{{image}}" class="align-self-center">
+            <div class="d-flex justify-content-center gap-2">
+                <p class="text-center">{{name}}</p>
+                <p>•</p>
+                <p class="text-center">${{price}}</p>
             </div>
+            <a href="/updating/{{id}}" class="btn btn-sm btn-primary mb-2">Update</a>
+            <a href="/delete/{{id}}&{{image}}" class="btn btn-sm btn-danger">Delete</a>
+        </div>
         {{/each}}
     </div>
 </main>
