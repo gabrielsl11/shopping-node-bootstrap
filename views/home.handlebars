@@ -4,9 +4,9 @@
             <form class="d-flex flex-column gap-3 align-items-center" action="/register" method="post" enctype="multipart/form-data">
                 <h4 class="text-center text-white">Register a product</h4>
                 {{!-- input:text é um atalho válido para se criar o elemento. --}}
-                <input type="text" name="name" class="form-control w-50" placeholder="Produtc's name" required>
-                <input type="number" name="price" class="form-control w-50" placeholder="Produtc's price" required>
-                <input type="file" name="image" class="form-control w-50" required>
+                <input type="text" name="name" class="form-control w-50" placeholder="Produtc's name" {{!-- required --}}>
+                <input type="number" name="price" class="form-control w-50" placeholder="Produtc's price" {{!-- required --}}>
+                <input type="file" name="image" class="form-control w-50" {{!-- required --}}>
                 <input type="submit" class="btn btn-success w-50" value="Register">
             </form>
         </div>

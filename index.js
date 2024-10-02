@@ -32,7 +32,7 @@ conn.connect((err) => {
 })
 
 // Configuração do Handlebars
-app.engine('handlebars', engine({ defaultLayout: 'main' }))
+app.engine('handlebars', engine({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
 app.set('views', './views')
 
@@ -60,45 +60,114 @@ app.get('/', (req, res) => {
 
 })
 
+app.get('/:situation', (req, res) => {
+    let sql = 'SELECT * FROM products ORDER BY id DESC;'
+    conn.query(sql, (err, ok) => {
+        res.render('home', { products: ok, situation: req.params.situation })
+    })
+})
+
 app.post('/register', (req, res) => {
     // console.log(req.body)
     // console.log(req.files.image.name)
     // res.end()
-    let name = req.body.name
-    let price = req.body.price
-    let image = req.files.image.name
+    try {
+        let name = req.body.name
+        let price = req.body.price
+        let image = req.files.image.name
 
-    let sql = `INSERT INTO products (name, price, image) VALUES ('${name}', '${price}', '${image}');`
-
-    // Somente o 'conn.query(sql)' funcionaria para inserção de novos registros.
-    conn.query(sql, (err, ok) => {
-        if (err) {
-            throw err
+        if (name == '' || price == '' || isNaN(price)) {
+            res.redirect('/registerError')
         } else {
-            req.files.image.mv(__dirname + '/images/' + req.files.image.name)
-            console.log(ok)
-        }
-    })
+            let sql = `INSERT INTO products (name, price, image) VALUES ('${name}', '${price}', '${image}');`
 
-    res.redirect('/')
+            conn.query(sql, (err, ok) => {
+                if (err) {
+                    throw err
+                } else {
+                    req.files.image.mv(__dirname + '/images/' + req.files.image.name)
+                    console.log(ok)
+                }
+            })
+
+            res.redirect('/registerOk')
+        }
+    } catch (err) {
+        res.redirect('/registerError')
+    }
 })
 
 app.get('/delete/:id&:image', (req, res) => {
+    try {
+        // console.log(req.params.id)
+        // console.log(req.params.image)
+        // res.end()
+        let sql = `DELETE FROM products WHERE id = ${req.params.id}`
+        conn.query(sql, (err, ok) => {
+            if (err) {
+                throw err
+            } else {
+                fs.unlink(__dirname + '/images/' + req.params.image, (err_img) => {
+                    console.log('Could not remove image!')
+                })
+            }
+        })
+
+        res.redirect('/deleteOk')
+    } catch (err) {
+        res.redirect('/deleteError')
+    }
+})
+
+app.get('/updating/:id', (req, res) => {
     // console.log(req.params.id)
-    // console.log(req.params.image)
     // res.end()
-    let sql = `DELETE FROM products WHERE id = ${req.params.id}`
+    let sql = `SELECT * FROM products WHERE id = ${req.params.id}`
     conn.query(sql, (err, ok) => {
         if (err) {
             throw err
         } else {
-            fs.unlink(__dirname + '/images/' + req.params.image, (err_img) => {
-                console.log('Could not remove image!')
-            })
+            res.render('updating', { product: ok[0] })
         }
     })
+})
 
-    res.redirect('/')
+app.post('/update', (req, res) => {
+    let id = req.body.id
+    let name = req.body.name
+    let price = req.body.price
+    let imageName = req.body.imageName
+
+    if (name == 0 || price == 0 || isNaN(price)) {
+        res.redirect('updateError')
+    } else {
+        try {
+            // let image = req.files.image.name
+            // res.send('Image will be updated!')
+            let image = req.files.image
+            let sql = `UPDATE products SET name = '${name}', price = '${price}', image = '${image.name}' WHERE id = ${id}`
+            conn.query(sql, (err, ok) => {
+                if (err) throw err
+
+                fs.unlink(__dirname + '/images/' + imageName, (err_img) => {
+                    console.log('Image was not removed!')
+                })
+
+                image.mv(__dirname + '/images/' + image.name)
+            })
+        } catch (err) {
+            // res.send('Image will not be updated!')
+            let sql = `UPDATE products SET name = '${name}', price = '${price}' WHERE id = ${id}`
+
+            conn.query(sql, (err, ok) => {
+                if (err) {
+                    throw err
+                }
+            })
+        }
+
+        res.redirect('/updateOk')
+    }
 })
 
 //////////////

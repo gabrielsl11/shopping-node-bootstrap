@@ -1,0 +1,20 @@
+<main>
+    <div>
+        <div>
+            <form class="d-flex flex-column gap-3 align-items-center" action="/update" method="post" enctype="multipart/form-data">
+                <h4 class="text-center text-white">Update a product</h4>
+                {{!-- input:text é um atalho válido para se criar o elemento. --}}
+                <img src="../images/{{product.image}}" class="rounded">
+                <input type="hidden" name="imageName" value="{{product.image}}">
+
+                {{!-- Com o 'disabled', o navegador não envia o valor do campo para o servidor ao submeter um formulário. Por isso usei input type="hidden". --}}
+                <input type="hidden" name="id" class="form-control" value="{{product.id}}" {{!-- disabled --}}>
+                <input type="text" name="name" class="form-control" value="{{product.name}}">
+                <input type="number" name="price" class="form-control" value="{{product.price}}">
+                <input type="file" name="image" class="form-control" value="{{product.image}}">
+                <input type="submit" class="btn btn-success w-100" value="Update">
+                <a href="/" class="btn btn-danger w-100">Cancel</a>
+            </form>
+        </div>
+    </div>
+</main>
